@@ -38,31 +38,6 @@ This led to the development of **CF Problem to PDF**, a lightweight browser exte
 - **Multiple Page Types:** Supports Codeforces Problemset, Contest, and Gym problem pages.
 - **Local Processing:** Works directly in the browser without requiring a backend, external API, or user account.
 
-## How It Works
-
-The extension follows the Chrome Manifest V3 architecture. Content extraction, mathematical rendering, and document preparation take place within the browser.
-
-```mermaid
-flowchart TD
-    A["Open a Codeforces Problem"] --> B["Activate the Extension"]
-    B --> C["Extract Problem Content"]
-    C --> D["Process LaTeX Expressions"]
-    D --> E["Render Mathematics with KaTeX"]
-    E --> F["Prepare A4 Print Layout"]
-    F --> G["Open Chrome Print Dialog"]
-    G --> H["Save as PDF"]
-```
-
-### Processing Workflow
-
-1. **Page Detection:** The extension operates on supported Codeforces problem pages.
-2. **Content Extraction:** The content script extracts the problem statement and relevant elements.
-3. **Mathematical Processing:** Original LaTeX expressions are processed and rendered using KaTeX.
-4. **Document Preparation:** Extracted content is arranged in a dedicated print-optimized layout.
-5. **PDF Export:** The browser's native print dialog opens, allowing the user to save the document as a PDF.
-
-All processing takes place locally in the browser.
-
 ## Installation
 
 ### Install from Source
@@ -165,14 +140,6 @@ cf-problem-to-pdf/
 | `npm run lint` | Runs ESLint checks |
 
 After building, load or reload the `dist` folder from `chrome://extensions`.
-
-## Design Considerations
-
-- **Simplicity:** A direct workflow from problem page to PDF export.
-- **Readability:** A consistent layout suitable for reading and printing.
-- **Mathematical Accuracy:** Preserves mathematical notation through LaTeX-based rendering.
-- **Lightweight Architecture:** No backend or external service dependency.
-- **Native PDF Export:** Uses Chrome's built-in print functionality.
 
 ## Scope and Limitations
 
