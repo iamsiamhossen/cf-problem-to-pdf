@@ -1,75 +1,192 @@
-# React + TypeScript + Vite
+# CF Problem to PDF
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <strong>A Chrome extension for converting Codeforces problem statements into clean, print-ready PDFs.</strong>
+  <br />
+  Extract problem content, preserve mathematical notation, and prepare an A4-formatted document directly in your browser.
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <img src="https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white" alt="Chrome Manifest V3" />
+  <img src="https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Math-KaTeX-1E9B50" alt="KaTeX" />
+  <img src="https://img.shields.io/badge/Build-Vite-646CFF?logo=vite&logoColor=white" alt="Vite" />
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Background
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+While practicing competitive programming, I often needed to save problem statements for offline reading, revision, and printing.
 
-## Expanding the ESLint configuration
+However, copying problem statements into a document was not always convenient. Mathematical expressions could lose their original formatting, code examples required additional adjustments, and the resulting documents often lacked a consistent layout.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+I wanted a straightforward solution that could handle this process directly from Codeforces.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The idea was simple:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Open a problem, click the extension, and get a document ready to save as PDF.**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+This led to the development of **CF Problem to PDF**, a lightweight browser extension focused on improving how competitive programming problem statements are saved and reviewed.
 
+## Key Features
+
+- **Problem Extraction:** Extracts problem statements directly from supported Codeforces pages.
+- **Mathematical Rendering:** Processes mathematical expressions and renders them using KaTeX.
+- **Print-Optimized Layout:** Presents extracted content in a clean, A4-oriented format.
+- **Code Formatting:** Maintains readable formatting for sample inputs, outputs, and code blocks.
+- **Multiple Page Types:** Supports Codeforces Problemset, Contest, and Gym problem pages.
+- **Local Processing:** Works directly in the browser without requiring a backend, external API, or user account.
+
+## How It Works
+
+The extension follows the Chrome Manifest V3 architecture. Content extraction, mathematical rendering, and document preparation take place within the browser.
+
+```mermaid
+flowchart TD
+    A["Open a Codeforces Problem"] --> B["Activate the Extension"]
+    B --> C["Extract Problem Content"]
+    C --> D["Process LaTeX Expressions"]
+    D --> E["Render Mathematics with KaTeX"]
+    E --> F["Prepare A4 Print Layout"]
+    F --> G["Open Chrome Print Dialog"]
+    G --> H["Save as PDF"]
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### Processing Workflow
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **Page Detection:** The extension operates on supported Codeforces problem pages.
+2. **Content Extraction:** The content script extracts the problem statement and relevant elements.
+3. **Mathematical Processing:** Original LaTeX expressions are processed and rendered using KaTeX.
+4. **Document Preparation:** Extracted content is arranged in a dedicated print-optimized layout.
+5. **PDF Export:** The browser's native print dialog opens, allowing the user to save the document as a PDF.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+All processing takes place locally in the browser.
 
+## Installation
+
+### Install from Source
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/iamsiamhossen/cf-problem-to-pdf.git
 ```
+
+**2. Navigate to the project directory**
+
+```bash
+cd cf-problem-to-pdf
+```
+
+**3. Install dependencies**
+
+```bash
+npm ci
+```
+
+**4. Build the extension**
+
+```bash
+npm run build
+```
+
+**5. Load the extension in Chrome**
+
+1. Open `chrome://extensions` in Google Chrome.
+2. Enable **Developer mode**.
+3. Select **Load unpacked**.
+4. Choose the generated `dist` folder from the project directory.
+
+The extension is now ready to use.
+
+## Usage
+
+1. Open a supported problem page on [Codeforces](https://codeforces.com/).
+2. Click the **CF Problem to PDF** extension icon in the Chrome toolbar.
+3. Wait for the print-ready document to open.
+4. Select **Save as PDF** in the Chrome print dialog.
+5. Choose the destination and save the document.
+
+**Recommended setting:** Select A4 as the paper size in the print settings.
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| TypeScript | Extension logic and type safety |
+| Chrome Manifest V3 | Browser extension platform |
+| Vite | Development and build tooling |
+| CRXJS | Chrome extension integration |
+| KaTeX | Mathematical expression rendering |
+| CSS | Document layout and print styling |
+
+## Project Structure
+
+```text
+cf-problem-to-pdf/
+├── public/
+│   ├── fonts/
+│   │   └── katex/
+│   ├── favicon.svg
+│   └── icons.svg
+├── scripts/
+│   └── fix-chrome-utf8.mjs
+├── src/
+│   ├── background/
+│   │   └── background.ts
+│   ├── content/
+│   │   ├── content.ts
+│   │   ├── extractor.ts
+│   │   ├── math.ts
+│   │   └── printer.ts
+│   ├── styles.css
+│   └── types/
+│       └── index.ts
+├── manifest.config.ts
+├── vite.config.ts
+└── package.json
+```
+
+## Development
+
+### Requirements
+
+- Node.js
+- npm
+- Google Chrome
+
+### Available Commands
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Starts the Vite development environment |
+| `npm run build` | Runs TypeScript checks and builds the extension |
+| `npm run lint` | Runs ESLint checks |
+
+After building, load or reload the `dist` folder from `chrome://extensions`.
+
+## Design Considerations
+
+- **Simplicity:** A direct workflow from problem page to PDF export.
+- **Readability:** A consistent layout suitable for reading and printing.
+- **Mathematical Accuracy:** Preserves mathematical notation through LaTeX-based rendering.
+- **Lightweight Architecture:** No backend or external service dependency.
+- **Native PDF Export:** Uses Chrome's built-in print functionality.
+
+## Scope and Limitations
+
+- Designed specifically for Codeforces problem pages.
+- Requires Google Chrome or a compatible Chromium-based browser with Manifest V3 support.
+- Uses the browser's native print dialog; PDF files are not downloaded automatically.
+- Final document appearance may vary depending on browser print settings.
+
+---
+
+<p align="center">
+  <strong>Developed for the competitive programming community.</strong>
+  <br />
+  <sub>Developed by <a href="https://github.com/iamsiamhossen">Siam Hossen</a></sub>
+  <br /><br />
+  <a href="https://github.com/iamsiamhossen/cf-problem-to-pdf">GitHub Repository</a>
+</p>
